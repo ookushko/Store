@@ -93,5 +93,93 @@ namespace Store_MVC.Areas.Admin.Controllers
             // Переадресовываем пользователя на метод Index
             return RedirectToAction("Index");
         }
+
+        // GET: Admin/Pages/EditPage/id
+        [HttpGet]
+        public ActionResult EditPage(int id)
+        {
+            // Объявляем модель PageVM
+            PageVM model;
+
+            using (Db db = new Db())
+            {
+                // Получаем страницу
+                PagesDTO dto = db.Pages.Find(id);
+
+                // Проверяем доступна ли страница
+                if (dto == null)
+                {
+                    return Content("The page does not exist.");
+                }
+
+                // Инициализируем модель данными
+                model = new PageVM(dto);
+            }
+
+            // Возвращаем представление с моделью
+            return View(model);
+        }
+
+        // POST: Admin/Pages/EditPage/id
+        [HttpPost]
+        public ActionResult EditPage(PageVM model)
+        {
+            // Проверить на валидность модель
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            using (Db db = new Db())
+            {
+                // Получить Id страницы
+                int id = model.Id;
+
+                // Объявим переменную для ShortDesc
+                string shortDesc = null;
+
+                // Получаем страницу (по Id)
+                PagesDTO dto = db.Pages.Find(id);
+
+                // Присваеваем название из полученой модели в DTO
+                dto.Title = model.Title;
+
+                // Проверяем краткий заголовок и присваеваем его, если необходимо
+                if (string.IsNullOrWhiteSpace(model.ShortDesc))
+                {
+                    shortDesc = model.Title.Replace(" ", "-").ToLower();
+                }
+                else
+                {
+                    shortDesc = model.ShortDesc.Replace(" ", "-").ToLower();
+                }
+
+                // Проверить Title & ShortDesc на уникальность 
+                if (db.Pages.Where(x => x.Id != id).Any(x => x.Title == model.Title))
+                {
+                    ModelState.AddModelError("", "That title alredy exist.");
+                    return View(model);
+                }
+                else if (db.Pages.Where(x => x.Id != id).Any(x => x.ShortDesc == shortDesc))
+                {
+                    ModelState.AddModelError("", "That short description alredy exist.");
+                    return View(model);
+                }
+
+                // Присвоить остальные значения в класс DTO
+                dto.ShortDesc = shortDesc;
+                dto.Body = model.Body;
+                dto.HasSidebar = model.HasSidebar;
+
+                // Сохраняем изменения в БД
+                db.SaveChanges();
+            }
+
+            // Устанавливаем сообщение в TempData
+            TempData["SM"] = "You have edited the record.";
+
+            // Вернуть пользователя обратно
+            return RedirectToAction("EditPage");
+        }
     }
 }
