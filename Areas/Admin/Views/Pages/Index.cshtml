@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Store_MVC.Models.ViewModels.Pages.PageVM>
+
+@{
+    ViewBag.Title = "Pages";
+}
+
+<h2>Pages</h2>
+
+@if (TempData["SM"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SM"]
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Create New Record", "AddPage", "", new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            ShortDesc
+        </th>
+        <th>
+            Sidebar
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+     {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShortDesc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasSidebar)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditPage", new { id = item.Id }) |
+                @Html.ActionLink("Details", "PageDetails", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "DeletePage", new { id = item.Id })
+            </td>
+        </tr>
+     }
+</table>
