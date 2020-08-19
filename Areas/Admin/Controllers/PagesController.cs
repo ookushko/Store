@@ -221,8 +221,39 @@ namespace Store_MVC.Areas.Admin.Controllers
                 // Сохраняем изменения в базе
                 db.SaveChanges();
             }
+
+            // Добавляем сообщение об успешном удалении
+            TempData["SM"] = "You have deleted a record.";
+
             // Возвращаем пользователя
             return RedirectToAction("Index");
+        }
+
+        // Метод сортировки
+        // GET: Admin/Pages/ReorderRecords
+        [HttpPost]
+        public void ReorderRecords(int[] id)
+        {
+
+            using (Db db = new Db())
+            {
+                // Реализуем начальный счётчик
+                int count = 0;
+
+                // Инициализируем модель данных
+                PagesDTO dto;
+
+                // Устанавливаем сортирвку для каждой страницы
+                foreach (var recordId in id)
+                {
+                    dto = db.Pages.Find(recordId);
+                    dto.Sorting = count;
+
+                    db.SaveChanges();
+
+                    count++;
+                }
+            }
         }
     }
 }

@@ -34,10 +34,11 @@
             </ul>
 
             @*<span class="navbar-text">
-                Navbar text with an inline element
-            </span>*@
+                    Navbar text with an inline element
+                </span>*@
         </div>
-    </nav>    <div class="container body-content">
+    </nav>    
+    <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
@@ -46,6 +47,10 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+
+    <!-- Подклбчаем бандл к шаблону админской панели (5) -->
+    @Scripts.Render("~/bundles/jqueryui")
+
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

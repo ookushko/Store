@@ -23,8 +23,9 @@
 }
 else
 {
-<table class="table">
-    <tr>
+<!--5-->
+<table class="table sorting" id="pages">
+    <tr class="home">
         <th>
             Title
         </th>
@@ -40,8 +41,10 @@ else
 
     @foreach (var item in Model)
     {
-        <tr>
+        <!--5-->
+        <tr id="id_@item.Id">
             <td>
+                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
@@ -52,8 +55,14 @@ else
             </td>
             <td>
                 @Html.ActionLink("Edit", "EditPage", new { id = item.Id }) |
-                @Html.ActionLink("Details", "PageDetails", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "DeletePage", new { id = item.Id }, new { @class = "delete" })
+                @Html.ActionLink("Details", "PageDetails", new { id = item.Id })
+                <!-- Если ShortDesc равен home, не показывать кнопку на удаление (5)-->
+                @if (item.ShortDesc != "home")
+                {
+                    string slash = "| ";
+                    @slash;
+                    @Html.ActionLink("Delete", "DeletePage", new { id = item.Id }, new { @class = "delete" })
+                }
             </td>
         </tr>
     }
@@ -68,6 +77,20 @@ else
             /* Confirm record deletion */
             $("a.delete").click(function () {
                 if (!confirm("Confirm page deletion")) return false;
+            });
+
+            /* Sorting script */
+            $("table#pages tbody").sortable({
+                items: "tr:not(.home)",
+                placeholder: "ui-state-highlight",
+                update: function () {
+                    var ids = $("table#pages tbody").sortable("serialize");
+                    var url = "/Admin/Pages/ReorderRecords";
+
+                    $.post(url, ids, function (data) {
+
+                    });
+                }
             });
         });
     </script>
