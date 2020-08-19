@@ -1,0 +1,43 @@
+﻿@model Store_MVC.Models.ViewModels.Pages.PageVM
+
+@{
+    ViewBag.Title = "Record Details";
+}
+
+<h2>Record Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShortDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShortDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Body)
+        </dd>
+        
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditPage", new { id = Model.Id }) |
+    @Html.ActionLink("Back to Records", "Index")
+</p>

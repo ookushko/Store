@@ -181,5 +181,29 @@ namespace Store_MVC.Areas.Admin.Controllers
             // Вернуть пользователя обратно
             return RedirectToAction("EditPage");
         }
+
+        // GET: Admin/Pages/PageDetails/id
+        public ActionResult PageDetails(int id)
+        {
+            // Объявим модель PageVM
+            PageVM model;
+
+            using (Db db = new Db())
+            {
+                // Получить страницу
+                PagesDTO dto = db.Pages.Find(id);
+
+                // Подтвердаем доступность страницы
+                if (dto == null)
+                {
+                    return Content("The records does  not exist.");
+                }
+
+                // Присваеваем модели информацию из базы
+                model = new PageVM(dto);
+            }
+            // Возвращаем модель в представление
+            return View(model);
+        }
     }
 }
