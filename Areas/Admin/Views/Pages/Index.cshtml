@@ -16,6 +16,13 @@
 <p>
     @Html.ActionLink("Create New Record", "AddPage", "", new { @class = "btn btn-success" })
 </p>
+
+@if (!Model.Any())
+{
+    <h1 class="text-center">There are no records</h1>
+}
+else
+{
 <table class="table">
     <tr>
         <th>
@@ -32,7 +39,7 @@
 
 
     @foreach (var item in Model)
-     {
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -46,8 +53,22 @@
             <td>
                 @Html.ActionLink("Edit", "EditPage", new { id = item.Id }) |
                 @Html.ActionLink("Details", "PageDetails", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "DeletePage", new { id = item.Id })
+                @Html.ActionLink("Delete", "DeletePage", new { id = item.Id }, new { @class = "delete" })
             </td>
         </tr>
-     }
+    }
 </table>
+}
+
+@section Scripts
+{
+    <script>
+        $(function () {
+
+            /* Confirm record deletion */
+            $("a.delete").click(function () {
+                if (!confirm("Confirm page deletion")) return false;
+            });
+        });
+    </script>
+}
