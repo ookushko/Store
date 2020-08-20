@@ -255,5 +255,47 @@ namespace Store_MVC.Areas.Admin.Controllers
                 }
             }
         }
+
+        // GET: Admin/Pages/EditSidebar
+        [HttpGet]
+        public ActionResult EditSidebar()
+        {
+            // Объявляем модель
+            SidebarVM model;
+
+            using (Db db = new Db())
+            {
+                // Получаем данные из DTO
+                SidebarDTO dto = db.Sidebars.Find(1); // Жесткие значения в коде не желательно добавлять, ИСПРАВИТЬ!
+
+                // Заполняем модель данными
+                model = new SidebarVM(dto);
+            }
+
+            // Вернуть представление с моделью
+            return View(model);
+        }
+
+        // POST: Admin/Pages/EditSidebar
+        [HttpPost]
+        public ActionResult EditSidebar(SidebarVM model)
+        {
+            using (Db db = new Db())
+            {
+                // Получить данные из DTO 
+                SidebarDTO dto = db.Sidebars.Find(1); // Жесткие значения в коде не желательно добавлять, ИСПРАВИТЬ!
+
+                // Присваеваем данные в тело (в св-во Body)
+                dto.Body = model.Body; // Из представления сохраняем в модель которая работает с БД
+
+                // Сохраняем в БД
+                db.SaveChanges();
+            }
+            // Присваиваем сообщение в TempData
+            TempData["SM"] = "You have edited the sidebar.";
+
+            // Переадресация
+            return RedirectToAction("EditSidebar");
+        }
     }
 }
