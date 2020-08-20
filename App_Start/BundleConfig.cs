@@ -30,6 +30,10 @@ namespace Store_MVC
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/jquery-ui.css"));
+
+            // Подключаем новую библеотеку CKEditor
+            bundles.Add(new ScriptBundle("~/bundles/ckeditor").Include(
+                      "~/Scripts/ckeditor/ckeditor.js"));
         }
     }
 }

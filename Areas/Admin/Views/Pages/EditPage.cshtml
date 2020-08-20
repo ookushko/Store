@@ -58,7 +58,7 @@
         </div>
 
         <div class="form-group">
-             <div class="offset-2">
+            <div class="col">
                 <input type="submit" value="Edit Record" class="btn btn-secondary" />
             </div>
         </div>
@@ -68,3 +68,11 @@
 <div>
     @Html.ActionLink("Back to records", "Index")
 </div>
+
+<!-- Скрипт подмены  для CKEditor-->
+@section Scripts
+{
+    <script>
+        CKEDITOR.replace("Body")
+    </script>
+}

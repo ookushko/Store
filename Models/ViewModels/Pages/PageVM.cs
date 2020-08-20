@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Store_MVC.Models.ViewModels.Pages
 {
@@ -34,6 +35,7 @@ namespace Store_MVC.Models.ViewModels.Pages
         [Required]
         [Display(Name = "Full description")]
         [StringLength(int.MaxValue, MinimumLength = 3)]
+        [AllowHtml]
         public string Body { get; set; }
         public int Sorting { get; set; }
         [Display(Name = "Sidebar")]
