@@ -14,9 +14,9 @@
         <input type="text" id="newcategoryname" class="form-control" />
     </div>
     <p>
-        <a href="#" id="newcategory" class="btn btn-success">Add a new category</a>
+        <a href="#" id="new-category" class="btn btn-success">Add a new category</a>
         <span class="ajax-text">
-            <img src="~/Content/img/ajax-loader.gif" height="50"/>
+            <img src="~/Content/img/ajax-loader.gif" height="50" />
         </span>
     </p>
 </div>
@@ -36,7 +36,7 @@ else
         </tr>
 
         @foreach (var item in Model)
-         {
+        {
             <tr>
                 <td>
                     @Html.EditorFor(modelItem => item.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
@@ -45,7 +45,37 @@ else
                     @Html.ActionLink("Delete", "DeleteCategory", new { id = item.Id }, new { @class = "delete btn btn-danger" })
                 </td>
             </tr>
-         }
+        }
 
-</table>
+    </table>
+}
+
+@section Scripts
+{
+    <script>
+        $(function () {
+
+            /* Add new category */
+            
+
+            /* Confirm record deletion */
+            $("a.delete").click(function () {
+                if (!confirm("Confirm category deletion")) return false;
+            });
+
+            /* Sorting script */
+            $("table#pages tbody").sortable({
+                items: "tr:not(.headline)",
+                placeholder: "ui-state-highlight",
+                update: function () {
+                    var ids = $("table#pages tbody").sortable("serialize");
+                    var url = "/Admin/Pages/ReorderRecords";
+
+                    $.post(url, ids, function (data) {
+
+                    });
+                }
+            });
+        });
+    </script>
 }
