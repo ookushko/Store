@@ -6,6 +6,13 @@
 
 <h2>Categories</h2>
 
+@if (TempData["SM"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SM"]
+    </div>
+}
+
 <div class="new-category">
     <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -27,8 +34,8 @@
 }
 else
 {
-    <table class="table">
-        <tr>
+    <table class="table sorting" id="pages">
+        <tr class="headline">
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -39,7 +46,14 @@ else
         {
             <tr id="id_@item.Id">
                 <td>
-                    @Html.EditorFor(modelItem => item.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <div class="container">
+                        <div class="row">
+                            <div class="ui-icon ui-icon-arrowthick-2-n-s" style="margin-top: 10px;"></div>
+                            <div class="col">
+                                @Html.EditorFor(modelItem => item.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    </div>
                 </td>
                 <td>
                     @Html.ActionLink("Delete", "DeleteCategory", new { id = item.Id }, new { @class = "delete btn btn-danger" })
@@ -61,7 +75,7 @@ else
             var ajaxText = $("span.ajax-text"); /*Класс картинки загрузки*/
             var table = $("table#pages tbody"); /*Класс таблицы вывода*/
 
-            /* Пишем функцию на отлов нажатия Enter */
+            /* Функция на отлов нажатия Enter */
             newCategoryTextInput.keyup(function (e) {
                 if (e.keyCode == 13) {
                     newCategoryA.click();
@@ -100,7 +114,7 @@ else
                             location.reload();
                         }
                         else {
-                            ajaxText.html("<span class='alert alert-success'>The category has been added!</span>");
+                            ajaxText.html("<span class='alert alert-success'>The category has been added.</span>");
                             setTimeout(function () {
                                 ajaxText.fadeOut("fast", function () {
                                     ajaxText.html("<img src='/Content/img/ajax-loader.gif' height='50' />");
@@ -120,10 +134,8 @@ else
                 });
             });
 
-
-
             /* Confirm record deletion */
-            $("a.delete").click(function () {
+            $("body").on("click", "a.delete", function () {
                 if (!confirm("Confirm category deletion")) return false;
             });
 
@@ -133,7 +145,7 @@ else
                 placeholder: "ui-state-highlight",
                 update: function () {
                     var ids = $("table#pages tbody").sortable("serialize");
-                    var url = "/Admin/Shop/Categories";
+                    var url = "/Admin/Shop/ReorderCategories";
 
                     $.post(url, ids, function (data) {
 

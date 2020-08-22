@@ -84,5 +84,29 @@ namespace Store_MVC.Areas.Admin.Controllers
                 }
             }
         }
+
+        // Метод удаления записей (5)
+        // GET: Admin/Pages/DeleteCategory/id
+        public ActionResult DeleteCategory(int id)
+        {
+            using (Db db = new Db())
+            {
+                // Получаем модель категории
+                CategoryDTO dto = db.Categories.Find(id);
+
+                // Удаляем категорию
+                db.Categories.Remove(dto);
+
+                // Сохраняем изменения в базе
+                db.SaveChanges();
+            }
+
+            // Добавляем сообщение об успешном удалении
+            TempData["SM"] = "You have deleted a category.";
+
+            // Возвращаем пользователя
+            return RedirectToAction("Categories");
+        }
+
     }
 }
