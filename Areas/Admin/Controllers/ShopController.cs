@@ -85,7 +85,7 @@ namespace Store_MVC.Areas.Admin.Controllers
             }
         }
 
-        // Метод удаления записей (5)
+        // Метод удаления записей
         // GET: Admin/Pages/DeleteCategory/id
         public ActionResult DeleteCategory(int id)
         {
@@ -108,5 +108,28 @@ namespace Store_MVC.Areas.Admin.Controllers
             return RedirectToAction("Categories");
         }
 
+        // POST: Admin/Pages/DeleteCategory/id
+        [HttpPost]
+        public string RenameCategory(string newCatName, int id)
+        {
+            using (Db db = new Db())
+            {
+                // Проверяем уникальность имени
+                if (db.Categories.Any(x => x.Name == newCatName)) { return "titletaken"; }
+
+                // Получаем модель DTO
+                CategoryDTO dto = db.Categories.Find(id);
+
+                // Редактируем модель DTO
+                dto.Name = newCatName;
+                dto.ShortDesc = newCatName.Replace(" ", "-").ToLower();
+
+                // Сохраняем изменения
+                db.SaveChanges();
+            }
+
+            // Возвращаем результат
+            return "";
+        }
     }
 }
