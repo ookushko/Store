@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace Store_MVC.Areas.Admin.Controllers
@@ -267,7 +268,9 @@ namespace Store_MVC.Areas.Admin.Controllers
                 file.SaveAs(path);
 
                 // Создаем и сохраняем уменьшеную копию
-                
+                WebImage img = new WebImage(file.InputStream);
+                img.Resize(200, 200);
+                img.Save(path2);
             }
             #endregion
 
