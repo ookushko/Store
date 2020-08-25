@@ -206,7 +206,7 @@ namespace Store_MVC.Areas.Admin.Controllers
             #region Upload img
 
             // Создаем необходимые ссылки на дериктории
-            var originalDirectory = new DirectoryInfo(string.Format($"{Server.MapPath(@"\")}Images\\UPloads"));
+            var originalDirectory = new DirectoryInfo(string.Format($"{Server.MapPath(@"\")}Images\\Uploads"));
 
             var pathStr1 = Path.Combine(originalDirectory.ToString(), "Products");
             var pathStr2 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString());
