@@ -281,7 +281,8 @@ namespace Store_MVC.Areas.Admin.Controllers
 
         // Метод списка товаров (Реализована возможность переключения страниц с помощью PagedList.mvc)
         // GET: Admin/Shop/Products
-        public ActionResult Products(int? page, int? categoryId) // Если есть "?" может быть null-значение
+        [HttpGet]
+        public ActionResult Products(int? page, int? catId) // Если есть "?" может быть null-значение
         {
             // Объявляем ProductVM типа List
             List<ProductVM> listOfProductVM;
@@ -293,14 +294,15 @@ namespace Store_MVC.Areas.Admin.Controllers
             {
                 // Инициализируем List, заполняем данными
                 listOfProductVM = db.Products.ToArray()
-                    .Where(x => categoryId == null || categoryId == 0 || x.CategoryId == categoryId)
-                    .Select(x => new ProductVM(x)).ToList();
+                    .Where(x => catId == null || catId == 0 || x.CategoryId == catId)
+                    .Select(x => new ProductVM(x))
+                    .ToList();
 
                 // Заполняем категории данными
                 ViewBag.Categories = new SelectList(db.Categories.ToList(), "Id", "Name");
 
                 // Установливаем выбранную категорию
-                ViewBag.SelectedCat = categoryId.ToString();
+                ViewBag.SelectedCat = catId.ToString();
             }
 
             // Установливаем постраничную навигацию 

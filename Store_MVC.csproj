@@ -176,6 +176,7 @@
     <Content Include="Content\ShopJS\AddProductScript.js" />
     <Content Include="Content\ShopJS\CategoriesViewJS.js" />
     <Content Include="Content\ShopJS\IndexViewJS.js" />
+    <Content Include="Content\ShopJS\ProductsScript.js" />
     <Content Include="favicon.ico" />
     <Content Include="fileman\css\images\animated-overlay.gif" />
     <Content Include="fileman\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />

@@ -13,15 +13,22 @@
     <option value="0">All</option>
     @foreach (var item in ViewBag.Categories)
     {
-        if (ViewBag.SelectedCat == item.Value) { <option selected="selected" value="@item.Value">@item.Text</option> }
-        else { <option value="@item.Value">@item.Text</option> }
+        if (ViewBag.SelectedCat == item.Value)
+        {
+            <option selected="selected" value="@item.Value">@item.Text</option>
+        }
+        else
+        {
+            <option value="@item.Value">@item.Text</option>
+        }
     }
 </select>
-<br /><br />
+<br />
+<br />
 
 
 <p>
-    @Html.ActionLink("Add new product", "AddProduct", "", new { @class="btn btn-success" })
+    @Html.ActionLink("Add new product", "AddProduct", "", new { @class = "btn btn-success" })
 </p>
 <table class="table">
     <tr>
@@ -57,14 +64,16 @@
 
             <td>
                 <a href="/admin/shop/EditProduct/@product.Id">
-                    @if (@product.ImageName == null) { <img src="~/Content/img/no_image.png" /> }
-                    else { <img src="/Images/Uploads/Products/@product.Id/Thumbs/@product.ImageName" /> }
-                    
+                    @if (@product.ImageName == null)
+                    {<img src="/Content/img/no_image.png" /> }
+                    else
+                    { <img src="/Images/Uploads/Products/@product.Id/Thumbs/@product.ImageName" />}
+
                 </a>
             </td>
 
             <td>
-                @Html.ActionLink("Edit", "EditProduct", new { id = product.Id }, new { @class = "btn btn-info btn-sm" }) 
+                @Html.ActionLink("Edit", "EditProduct", new { id = product.Id }, new { @class = "btn btn-info btn-sm" })
                 @Html.ActionLink("Delete", "DeleteProduct", new { id = product.Id }, new { @class = "btn btn-danger btn-sm" })
             </td>
         </tr>
@@ -72,3 +81,8 @@
 </table>
 
 @Html.PagedListPager((IPagedList)ViewBag.onePageOfProducts, page => Url.Action("Products", new { page, categoryId = ViewBag.SelectedCat }))
+
+@section Scripts
+{
+    <script src="~/Content/ShopJS/ProductsScript.js"></script>
+}
