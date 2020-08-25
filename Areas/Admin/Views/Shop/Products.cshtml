@@ -57,13 +57,15 @@
 
             <td>
                 <a href="/admin/shop/EditProduct/@product.Id">
-                    <img src="/Images/Uploads/Products/@product.Id/Thumbs/@product.ImageName" />
+                    @if (@product.ImageName == null) { <img src="~/Content/img/no_image.png" /> }
+                    else { <img src="/Images/Uploads/Products/@product.Id/Thumbs/@product.ImageName" /> }
+                    
                 </a>
             </td>
 
             <td>
-                @Html.ActionLink("Edit", "EditProduct", new { id = product.Id }) |
-                @Html.ActionLink("Delete", "DeleteProduct", new { id = product.Id })
+                @Html.ActionLink("Edit", "EditProduct", new { id = product.Id }, new { @class = "btn btn-info btn-sm" }) 
+                @Html.ActionLink("Delete", "DeleteProduct", new { id = product.Id }, new { @class = "btn btn-danger btn-sm" })
             </td>
         </tr>
     }
