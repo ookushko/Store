@@ -1,4 +1,5 @@
-﻿using Store_MVC.Models.Data;
+﻿using PagedList;
+using Store_MVC.Models.Data;
 using Store_MVC.Models.ViewModels.Shop;
 using System;
 using System.Collections.Generic;
@@ -276,6 +277,38 @@ namespace Store_MVC.Areas.Admin.Controllers
 
             // Переадресация
             return RedirectToAction("AddProduct");
+        }
+
+        // Метод списка товаров (Реализована возможность переключения страниц с помощью PagedList.mvc)
+        // GET: Admin/Shop/Products
+        public ActionResult Products(int? page, int? categoryId) // Если есть "?" может быть null-значение
+        {
+            // Объявляем ProductVM типа List
+            List<ProductVM> listOfProductVM;
+
+            // Устанавливаем номер страницы
+            var pageNumber = page ?? 1;
+
+            using (Db db = new Db())
+            {
+                // Инициализируем List, заполняем данными
+                listOfProductVM = db.Products.ToArray()
+                    .Where(x => categoryId == null || categoryId == 0 || x.CategoryId == categoryId)
+                    .Select(x => new ProductVM(x)).ToList();
+
+                // Заполняем категории данными
+                ViewBag.Categories = new SelectList(db.Categories.ToList(), "Id", "Name");
+
+                // Установливаем выбранную категорию
+                ViewBag.SelectedCat = categoryId.ToString();
+            }
+
+            // Установливаем постраничную навигацию 
+            var onePageOfProducts = listOfProductVM.ToPagedList(pageNumber, 3); // Кол-во товаров на странице = 3
+            ViewBag.onePageOfProducts = onePageOfProducts;
+
+            // Возвращаем представление с данными
+            return View(listOfProductVM);
         }
     }
 }
