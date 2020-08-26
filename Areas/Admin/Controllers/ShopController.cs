@@ -313,7 +313,40 @@ namespace Store_MVC.Areas.Admin.Controllers
             return View(listOfProductVM);
         }
 
+        // Метод редактирования списка товаров
+        // GET: Admin/Shop/EditProduct
+        [HttpGet]
+        public ActionResult EditProduct(int id)
+        {
+            // Объявляем модель ProductVM
+            ProductVM model;
 
+            using (Db db = new Db())
+            {
+                // Получаем продукт
+                ProductDTO dto = db.Products.Find(id);
+                
+                // Проверяем доступен ли продукт
+                if (dto == null)
+                {
+                    return Content("That product does not exist.");
+                }
+
+                // Инициализирем модель данных
+                model = new ProductVM(dto);
+
+                // Создаём список категорий
+                model.Categories = new SelectList(db.Categories.ToList(), "Id", "Name");
+
+                // Получаем все изображения из галереи
+                model.GalleryImages = Directory
+                    .EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Thumbs"))
+                    .Select(fn => Path.GetFileName(fn));
+            }
+
+            // Возвращаем модель в представление
+            return View(model);
+        }
 
     }
 }
