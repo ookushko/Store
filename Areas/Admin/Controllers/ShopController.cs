@@ -140,7 +140,7 @@ namespace Store_MVC.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult AddProduct()
         {
-            // Объявить модель данных
+            // Объявляем модель данных
             ProductVM model = new ProductVM();
 
             // Добавляем список категорий
@@ -312,5 +312,8 @@ namespace Store_MVC.Areas.Admin.Controllers
             // Возвращаем представление с данными
             return View(listOfProductVM);
         }
+
+
+
     }
 }
