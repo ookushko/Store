@@ -65,7 +65,6 @@
                 }
                 <br />
                 <br />
-
                 <img id="imgpreview" src="~/Content/img/no_image.png" />
                 <div class="col-md-10">
                     <input type="file" name="file" id="imageUpload" />
@@ -81,11 +80,38 @@
     </div>
 }
 
+<hr />
+@if (!Model.GalleryImages.Any())
+{
+    <h3>There are no gallery images for this product.</h3>
+}
+
+<form action="/admin/shop/SaveGallerryImages" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+    <div class="fallback"></div>
+    @*<input type="file" name="file" multiple="" />*@
+    @*<input type="submit" value="Upload" />*@
+</form>
+
+<br /><br />
+
+@foreach (var image in Model.GalleryImages)
+{
+    <div style="display: inline-block">
+        <img src="/Images/Uploads/Products/@Model.Id/Gallery/Thumbs/@image" />
+        @Html.ActionLink("Delete", "DeleteImage", "Shop", new { @class = "deleteimage", data_name = image })
+    </div>
+}
+
+<!-- -------------------------------------------------------------------- -->
 <div>
-    @Html.ActionLink("Back to List", "Products")
+    @Html.ActionLink("Back to Products", "Products")
 </div>
+
+<link href="~/Scripts/dropzone/basic.css" rel="stylesheet" />
+<link href="~/Scripts/dropzone/dropzone.css" rel="stylesheet" />
 
 @section Scripts
 {
     <script src="~/Content/ShopJS/AddProductScript.js"></script>
+    <script src="~/Scripts/dropzone/dropzone.js"></script>
 }

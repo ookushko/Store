@@ -406,7 +406,7 @@ namespace Store_MVC.Areas.Admin.Controllers
             #region Image upload | Логика обработки изображений
 
             // Проверяем загружен ли файл
-            if (file != null & file.ContentLength > 0)
+            if (file != null && file.ContentLength > 0)
             {
                 // Получаем расширение файла
                 string ext = file.ContentType.ToLower();
@@ -472,6 +472,29 @@ namespace Store_MVC.Areas.Admin.Controllers
 
             // Переадресация
             return RedirectToAction("EditProduct");
+        }
+
+        // Метод удаления товара
+        // POST: Admin/Shop/DeleteProduct/id
+        public ActionResult DeleteProduct(int id)
+        {
+            // Удаляем товар из БД
+            using (Db db = new Db())
+            {
+                ProductDTO dto = db.Products.Find(id);
+                db.Products.Remove(dto);
+
+                db.SaveChanges();
+            }
+
+            // Удаляем дериктории товара
+            var originalDirectory = new DirectoryInfo(string.Format($"{Server.MapPath(@"\")}Images\\Uploads"));
+            var pathStr = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString());
+
+            if (Directory.Exists(pathStr)) { Directory.Delete(pathStr, true); }
+
+            // Переадресация
+            return RedirectToAction("Products");
         }
     }
 }
