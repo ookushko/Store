@@ -3,6 +3,7 @@ using Store_MVC.Models.Data;
 using Store_MVC.Models.ViewModels.Shop;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations.Model;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -348,5 +349,66 @@ namespace Store_MVC.Areas.Admin.Controllers
             return View(model);
         }
 
+        // Метод редактирования списка товаров
+        // POST: Admin/Shop/EditProduct
+        [HttpPost]
+        public ActionResult EditProduct(ProductVM model, HttpPostedFileBase file)
+        {
+            // Получаем ID продукта
+            int id = model.Id;
+
+            // Заполняем выпадающий список категориями и изображениями
+            using (Db db = new Db())
+            {
+                model.Categories = new SelectList(db.Categories.ToList(), "Id", "Name");
+            }
+
+            model.GalleryImages = Directory
+                                .EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Thumbs"))
+                                .Select(fn => Path.GetFileName(fn));
+            
+            // Проверяем на валидность 
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Проверяем уникальность имени
+            using (Db db = new Db())
+            {
+                if (db.Products.Where(x => x.Id != id).Any(x => x.Name == model.Name))
+                {
+                    ModelState.AddModelError("", "That product name is taken.");
+                    return View(model);
+                } 
+            }
+
+            // Обновляем продукт
+            using (Db db = new Db())
+            {
+                ProductDTO dto = db.Products.Find(id);
+                dto.Name = model.Name;
+                dto.ShortDesc = model.Name.Replace(" ", "-").ToLower();
+                dto.Description = model.Description;
+                dto.Price = model.Price;
+                dto.CategoryId = model.CategoryId;
+                dto.ImageName = model.ImageName;
+
+                CategoryDTO categoryDTO = db.Categories.FirstOrDefault(x => x.Id == model.CategoryId);
+                dto.CategoryName = categoryDTO.Name;
+
+                db.SaveChanges();
+            }
+
+            // Устанавливаем сообщение в TempData
+            TempData["SM"] = "You have edited your product.";
+
+            #region Image upload | Логика обработки изображений
+
+            #endregion
+
+            // Переадресация
+            return RedirectToAction("EditProduct");
+        }
     }
 }
