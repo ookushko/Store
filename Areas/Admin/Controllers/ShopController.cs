@@ -405,6 +405,69 @@ namespace Store_MVC.Areas.Admin.Controllers
 
             #region Image upload | Логика обработки изображений
 
+            // Проверяем загружен ли файл
+            if (file != null & file.ContentLength > 0)
+            {
+                // Получаем расширение файла
+                string ext = file.ContentType.ToLower();
+
+                // Проверяем расширене файла
+                if (ext != "image/jpg" &&
+                    ext != "image/jpeg" &&
+                    ext != "image/pjpeg" &&
+                    ext != "image/gif" &&
+                    ext != "image/x-png" &&
+                    ext != "image/png")
+                {
+                    using (Db db = new Db())
+                    {
+                        ModelState.AddModelError("", "The image was not uploaded - wrong image extension.");
+                        return View(model);
+                    }
+                }
+
+                // Устанавливаем пути загрузки
+                var originalDirectory = new DirectoryInfo(string.Format($"{Server.MapPath(@"\")}Images\\Uploads"));
+
+                var pathStr1 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString());
+                var pathStr2 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Thumbs");
+
+                // Удаляем существующие файлы и директории
+                DirectoryInfo di1 = new DirectoryInfo(pathStr1);
+                DirectoryInfo di2 = new DirectoryInfo(pathStr2);
+
+                foreach (var file2 in di1.GetFiles())
+                {
+                    file2.Delete();
+                }
+                foreach (var file3 in di1.GetFiles())
+                {
+                    file3.Delete();
+                }
+
+                // Сохранить изображение
+                string imageName = file.FileName;
+
+                using (Db db = new Db())
+                {
+                    ProductDTO dto = db.Products.Find(id);
+                    dto.ImageName = imageName;
+
+                    db.SaveChanges();
+                }
+
+                // Сохраняем оригинал и миниатюрную версию
+                var path = string.Format($"{pathStr1}\\{imageName}");
+                var path2 = string.Format($"{pathStr2}\\{imageName}"); // Уменьшенное изображение
+
+                // Сохраняем оригинальное изображение
+                file.SaveAs(path);
+
+                // Создаем и сохраняем уменьшеную копию
+                WebImage img = new WebImage(file.InputStream);
+                img.Resize(200, 200);
+                img.Save(path2);
+            }
             #endregion
 
             // Переадресация
