@@ -496,5 +496,40 @@ namespace Store_MVC.Areas.Admin.Controllers
             // Переадресация
             return RedirectToAction("Products");
         }
+
+        // Метод дообавления изображения в Gallery
+        // POST: Admin/Shop/SaveGallerryImages/id
+        [HttpPost]
+        public void SaveGallerryImages(int id)
+        {
+            // Перебираем все полученные файлы
+            foreach (string fileName in Request.Files)
+            {
+                // инициализируем файлы
+                HttpPostedFileBase file = Request.Files[fileName];
+
+                // Проверяем на 'null'
+                if (file != null && file.ContentLength > 0)
+                {
+                    // Назначаем путь дерикториям
+                    var originalDirectory = new DirectoryInfo(string.Format($"{Server.MapPath(@"\")}Images\\Uploads"));
+
+                    string pathStr1 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Gallery");
+                    string pathStr2 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Gallery\\Thumbs");
+
+                    // Назначаем путь изображениям
+                    var path = string.Format($"{pathStr1}\\{file.FileName}");
+                    var path2 = string.Format($"{pathStr2}\\{file.FileName}");
+
+                    // Сохраняем оригинальное изображение и уменьшенное 
+                    file.SaveAs(path);
+
+
+                    WebImage img = new WebImage(file.InputStream);
+                    img.Resize(200, 200);
+                    file.SaveAs(path2);
+                }
+            }
+        }
     }
 }
