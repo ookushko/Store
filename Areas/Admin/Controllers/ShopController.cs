@@ -531,5 +531,24 @@ namespace Store_MVC.Areas.Admin.Controllers
                 }
             }
         }
+
+        // Метод удаления изображений из Gallery
+        // POST: Admin/Shop/DeleteImage/id/imageName
+        public void DeleteImage(int id, string imageName)
+        {
+            string fullPath1 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/" + imageName);
+            string fullPath2 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/Thumbs" + imageName);
+
+            // Проверяем файл, если доступен, то удаляем 
+            if (System.IO.File.Exists(fullPath1))
+            {
+                System.IO.File.Delete(fullPath1);
+            }
+            if (System.IO.File.Exists(fullPath1))
+            {
+                System.IO.File.Delete(fullPath1);
+            }
+
+        }
     }
 }
