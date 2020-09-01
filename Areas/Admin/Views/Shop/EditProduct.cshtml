@@ -86,11 +86,16 @@
     <h3>There are no gallery images for this product.</h3>
 }
 
-<form action="/admin/shop/SaveGalleryImages" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
-    <div class="fallback"></div>
-    @*<input type="file" name="file" multiple="" />*@
-    @*<input type="submit" value="Upload" />*@
-</form>
+@*<form action="/admin/shop/SaveGalleryImages" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+    <div class="fallback">
+        <input type="file" name="file" multiple="" />
+        <input type="submit" value="Upload" />
+    </div>
+</form>*@
+
+<form action="/admin/shop/SaveGalleryImages"
+      class="dropzone"
+      id="dropzoneForm"></form>
 
 <br />
 <br />
@@ -103,7 +108,6 @@
     </div>
 }
 
-<!-- -------------------------------------------------------------------- -->
 <div>
     @Html.ActionLink("Back to Products", "Products")
 </div>
@@ -117,9 +121,7 @@
     <script src="~/Scripts/dropzone/dropzone.js"></script>
 
     <script>
-
-            /* Dropzone js*/
-
+        /* Dropzone js*/
         Dropzone.options.dropzoneForm = {
             acceptedFiles: "image/*",
             init: function () {
@@ -129,52 +131,27 @@
                             location.reload();
                         }
                     });
-                this.on("sending",
-                    function (file, xhr, formData) {
-                        formData.append("id",  @Model.Id);
-                    });
+                this.on("sending", function (file, xhr, formData) {
+                    formData.append("id",  @Model.Id);
+                });
+
             }
         };
 
-        // -----
-
-            /* Delete gallery image */
-
-            $("a.deleteimage").click(function(e) {
-                e.preventDefault();
-
-                if (!confirm("Confirm deletion")) return false;
-
-                var $this = $(this);
-                var url = "/admin/shop/DeleteImage";
-                var imageName = $this.data("name");
-
-
-                $.post(url, { id: @Model.Id, imageName: imageName }, function(data) {
-                    $this.parent()./*parent().parent().*/fadeOut("slow");
-                });
-            });
-
-
-            /*-----------------------------------------------------------*/
-
-
-    </script>
-    @*<script>
+        /* Delete gallery image */
         $("a.deleteimage").click(function(e) {
-                e.preventDefault();
+            e.preventDefault();
 
-                if (!confirm("Confirm deletion")) return false;
+            if (!confirm("Confirm deletion")) return false;
 
-                var $this = $(this);
-                var url = "/admin/shop/DeleteImage";
-                var imageName = $this.data("name");
+            var $this = $(this);
+            var url = "/admin/shop/DeleteImage";
+            var imageName = $this.data("name");
 
-
-                $.post(url, { id: @Model.Id, imageName: imageName }, function(data) {
-                    $this.parent()./*parent().parent().*/fadeOut("slow");
-                });
+            $.post(url, { id: @Model.Id, imageName: imageName }, function(data) {
+                $this.parent()./*parent().parent().*/fadeOut("slow");
             });
+        });
+
     </script>
-*@
 }
