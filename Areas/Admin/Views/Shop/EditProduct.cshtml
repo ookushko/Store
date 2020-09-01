@@ -86,7 +86,7 @@
     <h3>There are no gallery images for this product.</h3>
 }
 
-<form action="/admin/shop/SaveGallerryImages" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+<form action="/admin/shop/SaveGalleryImages" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
     <div class="fallback"></div>
     @*<input type="file" name="file" multiple="" />*@
     @*<input type="submit" value="Upload" />*@
@@ -160,4 +160,21 @@
 
 
     </script>
+    @*<script>
+        $("a.deleteimage").click(function(e) {
+                e.preventDefault();
+
+                if (!confirm("Confirm deletion")) return false;
+
+                var $this = $(this);
+                var url = "/admin/shop/DeleteImage";
+                var imageName = $this.data("name");
+
+
+                $.post(url, { id: @Model.Id, imageName: imageName }, function(data) {
+                    $this.parent()./*parent().parent().*/fadeOut("slow");
+                });
+            });
+    </script>
+*@
 }

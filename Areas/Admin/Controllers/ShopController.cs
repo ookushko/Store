@@ -498,9 +498,9 @@ namespace Store_MVC.Areas.Admin.Controllers
         }
 
         // Метод дообавления изображения в Gallery
-        // POST: Admin/Shop/SaveGallerryImages/id
+        // POST: Admin/Shop/SaveGalleryImages/id
         [HttpPost]
-        public void SaveGallerryImages(int id)
+        public void SaveGalleryImages(int id)
         {
             // Перебираем все полученные файлы
             foreach (string fileName in Request.Files)
@@ -508,7 +508,7 @@ namespace Store_MVC.Areas.Admin.Controllers
                 // инициализируем файлы
                 HttpPostedFileBase file = Request.Files[fileName];
 
-                // Проверяем на 'null'
+                // Проверяем на null
                 if (file != null && file.ContentLength > 0)
                 {
                     // Назначаем путь дерикториям
@@ -524,10 +524,9 @@ namespace Store_MVC.Areas.Admin.Controllers
                     // Сохраняем оригинальное изображение и уменьшенное 
                     file.SaveAs(path);
 
-
                     WebImage img = new WebImage(file.InputStream);
-                    img.Resize(200, 200);
-                    file.SaveAs(path2);
+                    img.Resize(200, 200).Crop(1,1);
+                    img.Save(path2);
                 }
             }
         }
@@ -538,7 +537,7 @@ namespace Store_MVC.Areas.Admin.Controllers
         public void DeleteImage(int id, string imageName)
         {
             string fullPath1 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/" + imageName);
-            string fullPath2 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/Thumbs" + imageName);
+            string fullPath2 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/Thumbs/" + imageName);
 
             // Проверяем файл, если доступен, то удаляем 
             if (System.IO.File.Exists(fullPath1))
