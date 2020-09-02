@@ -100,14 +100,21 @@
 <br />
 <br />
 
-@foreach (var image in Model.GalleryImages)
-{
-    <div style="display: inline-block">
-        <img src="/Images/Uploads/Products/@Model.Id/Gallery/Thumbs/@image" />
-        @Html.ActionLink("Delete", "DeleteImage", "Shop", new { @class = "deleteimage", data_name = image })
-    </div>
-}
-
+<div class="row">
+    @foreach (var image in Model.GalleryImages)
+    {
+        <div class="col">
+            <div class="galleryStyle">
+                <div style="width: 200px; height: 200px;">
+                    <img src="/Images/Uploads/Products/@Model.Id/Gallery/Thumbs/@image" />
+                </div>
+                <div style="text-align: center">
+                    @Html.ActionLink("Delete", "DeleteImage", "Shop", new { @class = "deleteimage btn btn-danger", data_name = image, style = "margin: 10px" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
 <div>
     @Html.ActionLink("Back to Products", "Products")
 </div>
@@ -149,7 +156,7 @@
             var imageName = $this.data("name");
 
             $.post(url, { id: @Model.Id, imageName: imageName }, function(data) {
-                $this.parent()./*parent().parent().*/fadeOut("slow");
+                $this.parent().parent().parent().fadeOut("slow");
             });
         });
 
