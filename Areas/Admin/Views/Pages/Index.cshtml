@@ -55,8 +55,14 @@ else
             </td>
             <td>
                 @Html.ActionLink("Edit", "EditPage", new { id = item.Id }) |
-                @Html.ActionLink("Details", "PageDetails", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "DeletePage", new { id = item.Id }, new { @class = "delete" })
+                @Html.ActionLink("Details", "PageDetails", new { id = item.Id })
+                @*@Html.ActionLink("Delete", "DeletePage", new { id = item.Id }, new { @class = "delete" })*@
+                @if (item.ShortDesc != "home")
+                {
+                    string slash = "| ";
+                    @slash;
+                    @Html.ActionLink("Delete", "DeletePage", new { id = item.Id }, new { @class = "delete" })
+                }
             </td>
         </tr>
     }

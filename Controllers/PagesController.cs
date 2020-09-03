@@ -58,6 +58,21 @@ namespace Store_MVC.Controllers
             return View(model);
         }
 
-        
+        public ActionResult PagesMenuPartial()
+        {
+            // Инициализируем лист PageVM
+            List<PageVM> pageVMList;
+
+            // Получаем все страницы, кроме HOME
+            using (Db db = new Db())
+            {
+                pageVMList = db.Pages.ToArray().OrderBy(x => x.Sorting)
+                    .Where(x => x.ShortDesc != "home")
+                    .Select(x => new PageVM(x)).ToList();
+            }
+
+            // Возвращаем частичное представление и лист данныхв
+            return PartialView("_PagesMenuPartial", pageVMList);
+        }
     }
 }

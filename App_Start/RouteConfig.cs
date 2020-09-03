@@ -13,6 +13,9 @@ namespace Store_MVC
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute("PagesMenuPartial", "Pages/PagesMenuPartial", new { controller = "Pages", action = "PagesMenuPartial" },
+                new[] { "Store_MVC.Controllers" });
+
             routes.MapRoute("Pages", "{page}", new { controller = "Pages", action = "Index" },
                 new[] { "Store_MVC.Controllers" });
 
