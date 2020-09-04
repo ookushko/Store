@@ -25,16 +25,16 @@
         </div>
     </nav>
 
-    <div class="row">
-        <div class="container body-content">
+    <div class="container body-content"> <!-- Контейнеры -->
+        <div class="row"> <!-- Ряды -->
             @if (ViewBag.Sidebar == "Yes")
             {
                 <div class="col">
                     @RenderBody()
                 </div>
 
-                <div class="col-xl-12 col-md-3">
-
+                <div class="col-sm-12 col-md-3">
+                    @Html.Action("SidebarPartial", "Pages")
                 </div>
             }
             else
@@ -46,13 +46,13 @@
 
 
         </div>
+
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Universal Market</p>
+        </footer>
     </div>
-
-    <hr />
-    <footer>
-        <p>&copy; @DateTime.Now.Year - Universal Market</p>
-    </footer>
-
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/scripts")
