@@ -27,6 +27,11 @@
 
     <div class="container body-content"> <!-- Контейнеры -->
         <div class="row"> <!-- Ряды -->
+
+            <div class="col-sm-12 col-md-3 list-group">
+                @Html.Action("CategoryMenuPartial", "Shop")
+            </div>
+
             @if (ViewBag.Sidebar == "Yes")
             {
                 <div class="col">
