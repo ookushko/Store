@@ -99,7 +99,7 @@ namespace Store_MVC.Controllers
 
             // Получаем изображение из гелереи
             model.GalleryImages = Directory
-                .EnumerateFiles(Server.MapPath("~~/Images/Uploads/Products/" + id + "/Gallery/Thumbs"))
+                .EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Thumbs"))
                 .Select(fn => Path.GetFileName(fn));
 
             // Возвращаем модель в представление
