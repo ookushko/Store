@@ -11,18 +11,8 @@ namespace Store_MVC.Controllers
     public class PagesController : Controller
     {
         // GET: Index/{page}
-        public ActionResult Index(string page = "")
+        public ActionResult Index(string page = "home") // Получаем/Устанавливаем ShortDesc
         {
-            // Получаем/Устанавливаем ShortDesc 
-            if (page == "")
-            {
-                page = "home";
-            }
-
-            // Объявляем модель и DTO
-            PageVM model;
-            PagesDTO dto;
-
             // Проверяем доступность текущей страницы 
             using (Db db = new Db())
             {
@@ -32,6 +22,9 @@ namespace Store_MVC.Controllers
                 }
             }
 
+            // Объявляем DTO
+            PagesDTO dto;
+
             // Получаем DTO страницы
             using (Db db = new Db())
             {
@@ -39,20 +32,13 @@ namespace Store_MVC.Controllers
             }
 
             // Устанавливаем Title // ViewBag - Динамический тип, не требует строгой типизации, сам определяет что в него передали
-            ViewBag.PageTitle = dto.Title; 
+            ViewBag.PageTitle = dto.Title;
 
             // Проверяем боковую панель
-            if (dto.HasSidebar == true)
-            {
-                ViewBag.Sidebar = "Yes";
-            }
-            else
-            {
-                ViewBag.Sidebar = "No";
-            }
+            ViewBag.Sidebar = dto.HasSidebar ? "Yes" : "No";
 
-            // Заполняем модель данными
-            model = new PageVM(dto);
+            // Объявляем и заполняем модель данными
+            PageVM model = new PageVM(dto);
 
             // Возвращаем представление с моделью
             return View(model);
