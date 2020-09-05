@@ -2,6 +2,7 @@
 using Store_MVC.Models.ViewModels.Shop;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -65,6 +66,44 @@ namespace Store_MVC.Controllers
 
             //Возвращаем представление с моделью
             return View(productVMList);
+        }
+
+        // Метод для просмотра детальной информации о продукте
+        // GET: Shop/product-details/name
+        [ActionName("product-details")]
+        public ActionResult ProductDetails(string name)
+        {
+            // Объявляем модели DTO и VM
+            ProductDTO dto;
+            ProductVM model;
+
+            // Инициализируем id продукта
+            int id = 0;
+            using (Db db = new Db())
+            {
+                // Проверяем доступность
+                if (!db.Products.Any(x => x.ShortDesc.Equals(name)))
+                {
+                    return RedirectToAction("Index", "Shop");
+                }
+
+                // Инициализируем модель DTO данными
+                dto = db.Products.Where(x => x.ShortDesc == name).FirstOrDefault();
+
+                // Получаем id
+                id = dto.Id;
+
+                // Инициализируем модель VM данными
+                model = new ProductVM(dto);
+            }
+
+            // Получаем изображение из гелереи
+            model.GalleryImages = Directory
+                .EnumerateFiles(Server.MapPath("~~/Images/Uploads/Products/" + id + "/Gallery/Thumbs"))
+                .Select(fn => Path.GetFileName(fn));
+
+            // Возвращаем модель в представление
+            return View("ProductDetails", model);
         }
     }
 }
