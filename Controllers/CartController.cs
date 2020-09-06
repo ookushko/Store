@@ -12,7 +12,28 @@ namespace Store_MVC.Controllers
         // GET: Cart
         public ActionResult Index()
         {
-            return View();
+            // Объявляем List типа CartVM
+            var cart = Session["cart"] as List<CartVM> ?? new List<CartVM>();
+
+            // Проверяем пуста ли корзина
+            if (cart.Count == 0 || Session["cart"] == null)
+            {
+                ViewBag.Message = "Your cart is empty.";
+                return View();
+            }
+
+            // Складываем сумму и записываем во ViewBag
+            decimal total = 0m;
+
+            foreach (var item in cart)
+            {
+                total += item.Total;
+            }
+
+            ViewBag.GrandTotal = total;
+
+            // Возвращаем List в представление
+            return View(cart);
         }
 
         public ActionResult CartPartial()
