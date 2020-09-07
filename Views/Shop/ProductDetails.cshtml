@@ -55,4 +55,30 @@
     <link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
     <script src="~/Scripts/jquery.fancybox.js"></script>
     <script src="~/Content/ShopJS/ProductDetailsScript.js"></script>
+
+    <script>
+        /* Add to cart */
+        $(function () {
+            $("a.addtocart").click(function (e) {
+                e.preventDefault();
+                 /* ib - inline block */
+                $("span.loader").addClass("ib");
+
+                var url = "/cart/AddToCartPartial";
+
+                $.get(url, { id: @Model.Id }, function (data) {
+                    $(".ajaxcart").html(data);
+                }).done(function () {
+                    $("span.loader").removeClass("ib");
+                    $("div.ajaxmsg").addClass("ib");
+
+                    /* Показывает сообщение об успехе */
+                    setTimeout(function () {
+                        $("div.ajaxmsg").fadeOut("fast");
+                        $("div.ajaxmsg").removeClass("ib");
+                    }, 2000);
+                });
+            });
+        });
+    </script>
 }

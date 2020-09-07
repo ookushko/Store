@@ -75,3 +75,7 @@ div.ajaxmsg {
 span.loader {
     display: none;
 }
+
+.ib {
+    display: inline-block !important;
+}

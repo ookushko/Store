@@ -1,4 +1,5 @@
-﻿using Store_MVC.Models.ViewModels.Cart;
+﻿using Store_MVC.Models.Data;
+using Store_MVC.Models.ViewModels.Cart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,60 @@ namespace Store_MVC.Controllers
 
             // Возвращаем частичное представление с моделью
             return PartialView("_CartPartial", model);
+        }
+
+        public ActionResult AddToCartPartial(int id)
+        {
+            // Объявляем List<CartVM>
+            List<CartVM> cart = Session["cart"] as List<CartVM> ?? new List<CartVM>;
+
+            // Объявляем модель CartVM
+            CartVM model = new CartVM();
+
+            using (Db db = new Db())
+            {
+                // Получаем продукт
+                ProductDTO product = db.Products.Find(id);
+
+                // Проверяем наличия товара в корзине
+                var productInCart = cart.FirstOrDefault(x => x.ProductId == id);
+
+                // Если нет, добавляем товар в корзину
+                if (productInCart == null)
+                {
+                    cart.Add(new CartVM() 
+                    {
+                        ProductId = product.Id,
+                        ProductName = product.Name,
+                        Quantity = 1,
+                        Price = product.Price,
+                        Image = product.ImageName
+                    });
+                }
+                else
+                {
+                    // Если да, добавляем единицу товара
+                    productInCart.Quantity++;
+                }
+            }
+            // Получаем общее кол-во, цену и и добовляем данные в модель
+            int qty = 0; // qty - quantity
+            decimal price = 0m;
+
+            foreach (var item in cart)
+            {
+                qty += item.Quantity;
+                price += item.Quantity * item.Price;
+            }
+
+            model.Quantity = qty;
+            model.Price = price;
+
+            // Сохраняем состояние корзины в сессию
+            Session["cart"] = cart;
+
+            // Возвращаем частичное представление с моделью
+            return PartialView("_AddToCartPartial", model);
         }
     }
 }
