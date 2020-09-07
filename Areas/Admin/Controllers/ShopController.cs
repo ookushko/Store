@@ -307,7 +307,7 @@ namespace Store_MVC.Areas.Admin.Controllers
             }
 
             // Установливаем постраничную навигацию 
-            var onePageOfProducts = listOfProductVM.ToPagedList(pageNumber, 3); // Кол-во товаров на странице = 3
+            var onePageOfProducts = listOfProductVM.ToPagedList(pageNumber, 10); // Кол-во товаров на странице = 10
             ViewBag.onePageOfProducts = onePageOfProducts;
 
             // Возвращаем представление с данными

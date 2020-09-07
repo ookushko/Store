@@ -88,7 +88,7 @@ namespace Store_MVC.Areas.Admin.Controllers
             }
 
             // Передаём сообщение через TempData
-            TempData["SM"] = "You added a new record"; // Successful message - сообщение об успешной операции
+            TempData["SM"] = "You added a new Page"; // Successful message - сообщение об успешной операции
 
             // Переадресовываем пользователя на метод Index
             return RedirectToAction("Index");
@@ -176,7 +176,7 @@ namespace Store_MVC.Areas.Admin.Controllers
             }
 
             // Устанавливаем сообщение в TempData
-            TempData["SM"] = "You have edited the record.";
+            TempData["SM"] = "You have edited the page.";
 
             // Вернуть пользователя обратно
             return RedirectToAction("EditPage");
@@ -196,7 +196,7 @@ namespace Store_MVC.Areas.Admin.Controllers
                 // Подтвердаем доступность страницы
                 if (dto == null)
                 {
-                    return Content("The records does  not exist.");
+                    return Content("The pages does  not exist.");
                 }
 
                 // Присваеваем модели информацию из базы
@@ -223,16 +223,16 @@ namespace Store_MVC.Areas.Admin.Controllers
             }
 
             // Добавляем сообщение об успешном удалении
-            TempData["SM"] = "You have deleted a record.";
+            TempData["SM"] = "You have deleted a page.";
 
             // Возвращаем пользователя
             return RedirectToAction("Index");
         }
 
         // Метод сортировки
-        // GET: Admin/Pages/ReorderRecords
+        // GET: Admin/Pages/ReorderPages
         [HttpPost]
-        public void ReorderRecords(int[] id)
+        public void ReorderPages(int[] id)
         {
 
             using (Db db = new Db())
@@ -244,9 +244,9 @@ namespace Store_MVC.Areas.Admin.Controllers
                 PagesDTO dto;
 
                 // Устанавливаем сортирвку для каждой страницы
-                foreach (var recordId in id)
+                foreach (var pageId in id)
                 {
-                    dto = db.Pages.Find(recordId);
+                    dto = db.Pages.Find(pageId);
                     dto.Sorting = count;
 
                     db.SaveChanges();
