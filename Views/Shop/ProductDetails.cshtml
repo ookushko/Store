@@ -21,10 +21,12 @@
 
         <div class="addtocart">
             <a href="#" class="addtocart btn btn-success">Add to cart</a>
+            <br />
             <span class="loader">
                 <img src="~/Content/img/ajax-loader.gif" height="100" width="150" />
             </span>
-            <div class="ajaxmsg">
+            <br />
+            <div class="alert alert-success" id="ajaxmsg" style="display: none;">
                 The product has been added to your cart.
             </div>
         </div>
@@ -70,12 +72,12 @@
                     $(".ajaxcart").html(data);
                 }).done(function () {
                     $("span.loader").removeClass("ib");
-                    $("div.ajaxmsg").addClass("ib");
+                    $("#ajaxmsg").addClass("ib");
 
                     /* Показывает сообщение об успехе */
                     setTimeout(function () {
-                        $("div.ajaxmsg").fadeOut("fast");
-                        $("div.ajaxmsg").removeClass("ib");
+                        $("#ajaxmsg").fadeOut("fast");
+                        $("#ajaxmsg").removeClass("ib");
                     }, 2000);
                 });
             });

@@ -65,13 +65,6 @@ textarea {
     }
 }
 
-div.ajaxmsg {
-    background: green;
-    color: white;
-    padding: 10px;
-    display: none;
-}
-
 span.loader {
     display: none;
 }
