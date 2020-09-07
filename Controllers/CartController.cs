@@ -43,7 +43,7 @@ namespace Store_MVC.Controllers
             CartVM model = new CartVM();
 
             // Объявляем переменную количества
-            int quantety = 0;
+            int qty = 0;
 
             // Объявляем переменную цены
             decimal price = 0;
@@ -56,9 +56,12 @@ namespace Store_MVC.Controllers
 
                 foreach (var item in list)
                 {
-                    quantety += item.Quantity;
+                    qty += item.Quantity;
                     price += item.Quantity * item.Price;
                 }
+
+                model.Quantity = qty;
+                model.Price = price;
             }
             else
             {
@@ -74,7 +77,7 @@ namespace Store_MVC.Controllers
         public ActionResult AddToCartPartial(int id)
         {
             // Объявляем List<CartVM>
-            List<CartVM> cart = Session["cart"] as List<CartVM> ?? new List<CartVM>;
+            List<CartVM> cart = Session["cart"] as List<CartVM> ?? new List<CartVM>();
 
             // Объявляем модель CartVM
             CartVM model = new CartVM();
