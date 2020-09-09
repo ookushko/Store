@@ -189,6 +189,7 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\ShopJS\AddProductScript.js" />
     <Content Include="Content\ShopJS\CategoriesViewJS.js" />
+    <Content Include="Content\ShopJS\IncrementProductScript.js" />
     <Content Include="Content\ShopJS\IndexViewJS.js" />
     <Content Include="Content\ShopJS\ProductDetailsScript.js" />
     <Content Include="Content\ShopJS\ProductsScript.js" />

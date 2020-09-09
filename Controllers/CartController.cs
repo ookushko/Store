@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace Store_MVC.Controllers
@@ -127,5 +128,30 @@ namespace Store_MVC.Controllers
             // Возвращаем частичное представление с моделью
             return PartialView("_AddToCartPartial", model);
         }
+
+        // Метод добавляющий продукцию
+        // GET: /Cart/IncrementProduct
+        public JsonResult IncrementProduct(int productId)
+        {
+            // Объявляем List<CartVM>
+            List<CartVM> cart = Session["cart"] as List<CartVM>;
+
+            using (Db db = new Db())
+            {
+                // Получаем модель CartVM из List
+                CartVM model = cart.FirstOrDefault(x => x.ProductId == productId);
+
+                // Добавляем количество
+                model.Quantity++;
+
+                // Сохраняем необходимые данные
+                var result = new { qty = model.Quantity, price = model.Price };
+
+                //Возвращаем JSON ответ с данными
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
     }
 }
