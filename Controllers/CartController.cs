@@ -180,12 +180,20 @@ namespace Store_MVC.Controllers
                 //Возвращаем JSON ответ с данными
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
-
-
-
-
-
-
         }
+        public void RemoveProduct(int productId)
+        {
+            // Объявляем List<CartVM>
+            List<CartVM> cart = Session["cart"] as List<CartVM>;
+
+            using (Db db = new Db())
+            {
+                // Получаем модель CartVM из List
+                CartVM model = cart.FirstOrDefault(x => x.ProductId == productId);
+
+                cart.Remove(model);
+            }
+        }
+
     }
 }
