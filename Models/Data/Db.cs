@@ -12,6 +12,6 @@ namespace Store_MVC.Models.Data // Будем хранить строку под
         public DbSet<SidebarDTO> Sidebars { get; set; }
         public DbSet<CategoryDTO> Categories { get; set; }
         public DbSet<ProductDTO> Products { get; set; }
-
+        public DbSet<UserDTO> Users { get; set; }
     }
 }
