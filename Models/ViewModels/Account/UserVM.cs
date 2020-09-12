@@ -25,20 +25,24 @@ namespace Store_MVC.Models.ViewModels.Account
         }
         public int Id { get; set; }
         [Required]
+        [Display(Name = "First name")]
         public string FirstName { get; set; }
         [Required]
+        [Display(Name = "Last name")]
         public string LastName { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         public string EmailAdress { get; set; }
         [Required]
+        [Display(Name = "User name")]
         public string Username { get; set; }
         [Required]
         [DataType(DataType.Password)]
         [StringLength(50, MinimumLength = 6)]
         public string Password { get; set; }
         [Required]
+        [Display(Name = "Confirm password")]
         public string ConfirmPassword { get; set; }
     }
 }
