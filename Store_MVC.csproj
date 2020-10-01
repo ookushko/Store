@@ -1012,6 +1012,7 @@
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Cart\_AddToCartPartial.cshtml" />
     <Content Include="Views\Account\CreateAccount.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
