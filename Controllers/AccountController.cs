@@ -14,7 +14,7 @@ namespace Store_MVC.Controllers
             return View();
         }
 
-        // GET: sccount/create-account
+        // GET: account/create-account
         [ActionName("create-account")]
         [HttpGet]
         public ActionResult CreateAccount()
