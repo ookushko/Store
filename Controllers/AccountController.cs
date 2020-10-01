@@ -11,7 +11,7 @@ namespace Store_MVC.Controllers
         // GET: Account
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Login");
         }
 
         // GET: account/create-account
@@ -21,5 +21,21 @@ namespace Store_MVC.Controllers
         {
             return View("CreateAccount");
         }
+
+        // GET: Account/Login
+        [HttpGet]
+        public ActionResult Login()
+        {
+            // Подтвердить что пользователь не авторизован
+            string userName = User.Identity.Name;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                return RedirectToAction("user-profile");
+            }
+
+            // Возвращаем представление
+            return View();
+        }
+
     }
 }
