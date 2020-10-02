@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Store_MVC.Controllers
 {
@@ -101,6 +102,32 @@ namespace Store_MVC.Controllers
 
             // Возвращаем представление
             return View();
+        }
+
+        // POST: Account/Login
+        [HttpPost]
+        public ActionResult Login(LoginUserVM model)
+        {
+            // Проверяем модель на валидность
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Проверяем пользователя на валидность
+            using (Db db = new Db())
+            {
+                if (db.Users.Any(x => x.Username.Equals(model.Username) && x.Password.Equals(model.Password)))
+                {
+                    FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
+                    return Redirect(FormsAuthentication.GetRedirectUrl(model.Username, model.RememberMe));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid username or password.");
+                    return View(model);
+                }
+            }
         }
 
     }
