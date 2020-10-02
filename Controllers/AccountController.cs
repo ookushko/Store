@@ -137,5 +137,30 @@ namespace Store_MVC.Controllers
             return RedirectToAction("Login");
         }
 
+        public ActionResult UserNavPartial()
+        {
+            // Получаем имя пользователя
+            string userName = User.Identity.Name;
+
+            // Объявляем модель
+            UserNavPartialVM model;
+
+            using (Db db = new Db())
+            {
+                // Получаем пользователя
+                UserDTO dto = db.Users.FirstOrDefault(x => x.Username == userName);
+
+                // Заполняем модель данными из контекста dto
+                model = new UserNavPartialVM()
+                {
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName
+                };
+            }
+
+            // Возвращаем частичное представление представление
+            return PartialView(model);
+        }
+
     }
 }
