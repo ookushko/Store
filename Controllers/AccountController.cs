@@ -66,7 +66,7 @@ namespace Store_MVC.Controllers
                 // Добавляем данные в модель
                 db.Users.Add(userDTO);
 
-                // Сохранить данные
+                // Сохраняем данные
                 db.SaveChanges();
 
                 // Добавляем роль пользователю
@@ -75,7 +75,7 @@ namespace Store_MVC.Controllers
                 UserRoleDTO userRoleDTO = new UserRoleDTO()
                 {
                     UserId = id,
-                    RoleId = 2 // Роль обычного юзера
+                    RoleId = 2 /* Роль обычного юзера */
                 };
 
                 db.UserRoles.Add(userRoleDTO);
@@ -128,6 +128,13 @@ namespace Store_MVC.Controllers
                     return View(model);
                 }
             }
+        }
+
+        // GET: Account/Logout
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
         }
 
     }
