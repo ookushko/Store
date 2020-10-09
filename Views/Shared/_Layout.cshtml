@@ -18,6 +18,27 @@
 
                 @Html.Action("PagesMenuPartial", "Pages")
 
+                @if (Request.IsAuthenticated)
+                {
+                    <!-- Если пользователь авторизован -->
+                    <li> @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
+
+                    <!-- Выводит имя и фамилию пользователя -->
+                    <li> @Html.Action("UserNavPartial", "Account", new { area = "" })</li>
+                }
+                else
+                {
+                    if (ViewBag.Title == "Login")
+                    {
+                        <!-- Если пользователь на странице Login -->
+                        <li class="navbar-text"> @Html.ActionLink("Login", "Login", "Account", null, new { @class = "active", style = "text-decoration: none" }) </li>
+                    }
+                    else
+                    {
+                        <!-- Если пользователь не на странице Login -->
+                        <li> @Html.ActionLink("Login", "Login", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
+                    }
+                }
             </ul>
             <span class="navbar-text">
                 @Html.Action("CartPartial", "Cart")
