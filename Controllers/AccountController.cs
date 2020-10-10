@@ -189,8 +189,9 @@ namespace Store_MVC.Controllers
         // POST: /account/user-profile
         [HttpPost]
         [ActionName("user-profile")]
-        public ActionResult UserProfile(UserProfileVM model) 
+        public ActionResult UserProfile(UserProfileVM model)
         {
+            bool userNameIsChanged = false;
             // Проверяем модель на валидность
             if (!ModelState.IsValid)
             {
@@ -208,6 +209,13 @@ namespace Store_MVC.Controllers
             {
                 // Получаем имя пользователя
                 string userName = User.Identity.Name;
+
+                // Проверяем сменилось ли имя пользователя
+                if (userName != model.Username)
+                {
+                    userName = model.Username;
+                    userNameIsChanged = true;
+                }
 
                 // Проверяем имя на уникальность
                 if (db.Users.Where(x => x.Id != model.Id).Any(x => x.Username == userName))
@@ -237,8 +245,16 @@ namespace Store_MVC.Controllers
             // Устанавливаем сообщение в TempData
             TempData["SM"] = "You have edited your profile.";
 
-            // Возвращаем представление с моделью
-            return View("UserProfile", model);
+            if (!userNameIsChanged)
+            {
+                // Возвращаем представление с моделью
+                return View("UserProfile", model);
+            }
+            else
+            {
+                return RedirectToAction("Logout");
+            }
+
         }
     }
 }
