@@ -23,7 +23,7 @@ namespace Store_MVC
         /// <summary>
         /// Метод обработки запросов аунтефикации
         /// </summary>
-        protected void Application_AutentificateRequest()
+        protected void Application_AuthenticateRequest()
         {
             // Проверяем авторизацию пользователя
             if (User == null) return;

@@ -23,8 +23,20 @@
                     <!-- Если пользователь авторизован -->
                     <li> @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
 
-                    <!-- Выводит имя и фамилию пользователя -->
-                    <li> @Html.Action("UserNavPartial", "Account", new { area = "" })</li>
+                    if (User.IsInRole("User"))
+                    {
+                        if (ViewBag.Title == "User Profile")
+                        {
+                            <!-- Выводит имя и фамилию пользователя -->
+                            <li class="active"> @Html.Action("UserNavPartial", "Account", new { area = "" })</li>
+                        }
+                        else
+                        {
+                            <!-- Выводит имя и фамилию пользователя -->
+                            <li> @Html.Action("UserNavPartial", "Account", new { area = "" })</li>
+                        }
+
+                    }
                 }
                 else
                 {
@@ -40,9 +52,24 @@
                     }
                 }
             </ul>
-            <span class="navbar-text">
-                @Html.Action("CartPartial", "Cart")
-            </span>
+
+            @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <span class="navbar-text">
+                    @Html.ActionLink("Admin Area", "Index", "Dashboard", new { area = "Admin" }, null)
+                </span>
+            }
+            else
+            {
+                if (ViewBag.Title != "Cart Details")
+                {
+                <span class="navbar-text">
+                    @Html.Action("CartPartial", "Cart")
+                </span>
+                }
+            }
+
+
         </div>
     </nav>
 
