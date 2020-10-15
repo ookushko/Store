@@ -18,18 +18,24 @@
         <br />
         @Html.DisplayFor(model => model.Price) $
 
-
-        <div class="addtocart">
-            <a href="#" class="addtocart btn btn-success">Add to cart</a>
-            <br />
-            <span class="loader">
-                <img src="~/Content/img/ajax-loader.gif" height="100" width="150" />
-            </span>
-            <br />
-            <div class="alert alert-success" id="ajaxmsg" style="display: none;">
-                The product has been added to your cart.
+        @if (Request.IsAuthenticated)
+        {
+            <div class="addtocart">
+                <a href="#" class="addtocart btn btn-success">Add to cart</a>
+                <br />
+                <span class="loader">
+                    <img src="~/Content/img/ajax-loader.gif" height="100" width="150" />
+                </span>
+                <br />
+                <div class="alert alert-success" id="ajaxmsg" style="display: none;">
+                    The product has been added to your cart.
+                </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div>Please, login into your account.</div>
+        }
     </div>
 </div>
 
