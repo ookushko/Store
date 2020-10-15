@@ -195,5 +195,13 @@ namespace Store_MVC.Controllers
             }
         }
 
+        public ActionResult PaypalPartial()
+        {
+            // Получаем список товаров в корзине
+            List<CartVM> cart = Session["cart"] as List<CartVM>;
+
+            // Возвращаем частичное представление с списком
+            return PartialView(cart);
+        }
     }
 }
