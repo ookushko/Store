@@ -18,6 +18,15 @@
             var grandtotal = (gt + data.price).toFixed(2);
 
             $("td.grandtotal span").text(grandtotal);
+
+        }).done(function (data) {
+            var url2 = "/cart/PaypalPartial";
+
+            $.get(url2,
+                {},
+                function (data) {
+                    $("div.paypal").html(data);
+                });
         });
     });
 });
