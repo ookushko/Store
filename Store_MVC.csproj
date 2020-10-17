@@ -202,6 +202,7 @@
     <Content Include="Content\ShopJS\DecrementProductScript.js" />
     <Content Include="Content\ShopJS\IncrementProductScript.js" />
     <Content Include="Content\ShopJS\IndexViewJS.js" />
+    <Content Include="Content\ShopJS\PLaceOrderProductScript.js" />
     <Content Include="Content\ShopJS\ProductDetailsScript.js" />
     <Content Include="Content\ShopJS\ProductsScript.js" />
     <Content Include="Content\ShopJS\RemoveProductScript.js" />
