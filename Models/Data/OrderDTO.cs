@@ -11,7 +11,7 @@ namespace Store_MVC.Models.Data
     public class OrderDTO
     {
         [Key]
-        public int Id { get; set; }
+        public int OrderId { get; set; }
         public int UserId { get; set; }
         public DateTime CreatedAt { get; set; }
 
