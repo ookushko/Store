@@ -133,6 +133,9 @@ namespace Store_MVC.Controllers
         // GET: Account/Logout
         public ActionResult Logout()
         {
+            // Обнуляем сессию 
+            Session["cart"] = null;
+
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }

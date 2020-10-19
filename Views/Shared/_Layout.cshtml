@@ -52,19 +52,19 @@
                 }
             </ul>
 
-            @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+            @if (Request.IsAuthenticated)
             {
-                <span class="navbar-text">
-                    @Html.ActionLink("Admin Area", "Index", "Dashboard", new { area = "Admin" }, null)
-                </span>
-            }
-            else
-            {
-                if (ViewBag.Title != "Cart Details")
+                if (User.IsInRole("Admin"))
                 {
-                <span class="navbar-text">
-                    @Html.Action("CartPartial", "Cart")
-                </span>
+                    <span class="navbar-text">
+                        @Html.ActionLink("Admin Area", "Index", "Dashboard", new { area = "Admin" }, null)
+                    </span>
+                }
+                else if (ViewBag.Title != "Cart Details")
+                {
+                    <span class="navbar-text">
+                        @Html.Action("CartPartial", "Cart")
+                    </span>
                 }
             }
         </div>
@@ -94,9 +94,7 @@
                 </div>
             }
 
-
         </div>
-
 
         <hr />
         <footer>
