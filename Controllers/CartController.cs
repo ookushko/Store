@@ -225,10 +225,8 @@ namespace Store_MVC.Controllers
                 OrderDTO orderDTO = new OrderDTO();
 
                 // Получаем Id пользователя
-                var q = db.Users.FirstOrDefault(x => x.Username == userName);
-                int userId = q.Id;
-                //int userId = db.Users.FirstOrDefault(x => x.Username == userName).Id;
-
+                int userId = db.Users.FirstOrDefault(x => x.Username == userName).Id;
+                
                 // Заполняем модель данными
                 orderDTO.UserId = userId;
                 orderDTO.CreatedAt = DateTime.Now;

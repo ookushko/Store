@@ -5,7 +5,7 @@
 
         var productId = $(this).data("id");
         var url = "/cart/IncrementProduct";
-        /* Передаём всё через JSON запросы */
+
         $.getJSON(url, { productId: productId }, function (data) {
             $("td.qty" + productId).html(data.qty);
 
