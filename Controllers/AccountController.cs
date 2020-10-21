@@ -1,5 +1,6 @@
 ﻿using Store_MVC.Models.Data;
 using Store_MVC.Models.ViewModels.Account;
+using Store_MVC.Models.ViewModels.Shop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -258,6 +259,67 @@ namespace Store_MVC.Controllers
                 return RedirectToAction("Logout");
             }
 
+        }
+
+        // GET: /account/orders
+        public ActionResult Orders()
+        {
+            // Инициализируем модель OrdersForUserVM
+            List<OrdersForUserVM> ordersForUser = new List<OrdersForUserVM>();
+
+            using (Db db = new Db())
+            {
+
+                // Получаем Id пользователя
+                UserDTO user = db.Users.FirstOrDefault(x => x.Username == User.Identity.Name);
+                int userId = db.Users.FirstOrDefault(x => x.Username == User.Identity.Name).Id;
+
+                // Инициализируем модель OrderVM
+                List<OrderVM> orders = db.Orders.Where(x => x.UserId == userId).ToArray()
+                    .Select(x => new OrderVM(x)).ToList();
+
+                // Перебираем список товаров в OrderVM
+                foreach (var order in orders)
+                {
+                    // Инициализируем словарь товаров
+                    Dictionary<string, int> productsAndQuantity = new Dictionary<string, int>();
+
+                    // Объявляем переменную итоговой суммы
+                    decimal total = 0m;
+
+                    // Инициализируем модель OrderDetailsDTO
+                    List<OrderDetailsDTO> orderDetailsList = db.OrderDetails.Where(x => x.OrderId == order.OrderId).ToList();
+
+                    // Перебираем список OrderDetailsDTO
+                    foreach (var orderDetails in orderDetailsList)
+                    {
+                        // Получаем товар
+                        ProductDTO product = db.Products.FirstOrDefault(x => x.Id == orderDetails.ProductId);
+
+                        // Получаем цену товара
+                        decimal price = product.Price;
+
+                        // Получаем имя товара
+                        string productName = product.Name;
+
+                        // Добавляем товар в словарь
+                        productsAndQuantity.Add(productName, orderDetails.Quantity);
+
+                        // Получаем конечную стоимость товара
+                        total += orderDetails.Quantity * price;
+                    }
+                    // Добавляем полученные данные в модель OrdersForUserVM
+                    ordersForUser.Add(new OrdersForUserVM
+                    {
+                        OrderNumber = order.OrderId,
+                        Total = total,
+                        ProductsAndQuantity = productsAndQuantity,
+                        CreatedAt = order.CreatedAt
+                    });
+                }
+            }
+            // Возвращаем представление с моделью OrdersForUserVM
+            return View(ordersForUser);
         }
     }
 }
