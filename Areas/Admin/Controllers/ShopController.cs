@@ -2,9 +2,7 @@
 using Store_MVC.Areas.Admin.Models.ViewModels.Shop;
 using Store_MVC.Models.Data;
 using Store_MVC.Models.ViewModels.Shop;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations.Model;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -13,6 +11,7 @@ using System.Web.Mvc;
 
 namespace Store_MVC.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ShopController : Controller
     {
         // GET: Admin/Shop
@@ -162,7 +161,7 @@ namespace Store_MVC.Areas.Admin.Controllers
         {
             // Проверяем модель на валидность
             if (!ModelState.IsValid) // Если не валидная модель то берем из БД и возвращаем представление
-            { 
+            {
                 using (Db db = new Db())
                 {
                     model.Categories = new SelectList(db.Categories.ToList(), "Id", "Name");
@@ -327,7 +326,7 @@ namespace Store_MVC.Areas.Admin.Controllers
             {
                 // Получаем продукт
                 ProductDTO dto = db.Products.Find(id);
-                
+
                 // Проверяем доступен ли продукт
                 if (dto == null)
                 {
@@ -367,7 +366,7 @@ namespace Store_MVC.Areas.Admin.Controllers
             model.GalleryImages = Directory
                                 .EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Thumbs"))
                                 .Select(fn => Path.GetFileName(fn));
-            
+
             // Проверяем на валидность 
             if (!ModelState.IsValid)
             {
@@ -381,7 +380,7 @@ namespace Store_MVC.Areas.Admin.Controllers
                 {
                     ModelState.AddModelError("", "That product name is taken.");
                     return View(model);
-                } 
+                }
             }
 
             // Обновляем продукт
@@ -526,7 +525,7 @@ namespace Store_MVC.Areas.Admin.Controllers
                     file.SaveAs(path);
 
                     WebImage img = new WebImage(file.InputStream);
-                    img.Resize(200, 200).Crop(1,1);
+                    img.Resize(200, 200).Crop(1, 1);
                     img.Save(path2);
                 }
             }
@@ -594,7 +593,7 @@ namespace Store_MVC.Areas.Admin.Controllers
                         total += orderDetails.Quantity * price;
                     }
                     // Добавляем данные в моделль OrdersForAdminVM
-                    ordersForAdmin.Add(new OrdersForAdminVM 
+                    ordersForAdmin.Add(new OrdersForAdminVM
                     {
                         OrderNumber = order.OrderId,
                         UserName = username,

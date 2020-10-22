@@ -131,6 +131,7 @@ namespace Store_MVC.Controllers
             }
         }
 
+        [Authorize]
         // GET: Account/Logout
         public ActionResult Logout()
         {
@@ -140,7 +141,8 @@ namespace Store_MVC.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
-
+        
+        [Authorize]
         public ActionResult UserNavPartial()
         {
             // Получаем имя пользователя
@@ -169,6 +171,7 @@ namespace Store_MVC.Controllers
         // GET: /account/user-profile
         [HttpGet]
         [ActionName("user-profile")]
+        [Authorize]
         public ActionResult UserProfile()
         {
             // Получаем имя пользователя
@@ -193,6 +196,7 @@ namespace Store_MVC.Controllers
         // POST: /account/user-profile
         [HttpPost]
         [ActionName("user-profile")]
+        [Authorize]
         public ActionResult UserProfile(UserProfileVM model)
         {
             bool userNameIsChanged = false;
@@ -262,6 +266,7 @@ namespace Store_MVC.Controllers
         }
 
         // GET: /account/orders
+        [Authorize(Roles = "User")]
         public ActionResult Orders()
         {
             // Инициализируем модель OrdersForUserVM

@@ -183,6 +183,7 @@ namespace Store_MVC.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+
         public void RemoveProduct(int productId)
         {
             // Объявляем List<CartVM>
