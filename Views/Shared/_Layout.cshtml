@@ -20,8 +20,17 @@
 
                 @if (Request.IsAuthenticated)
                 {
-                    <!-- Если пользователь авторизован -->
-                    <li> @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
+
+                    if (ViewBag.Title == "Orders")
+                    {
+                        <!-- Если пользователь на странице Orders -->
+                        <li class="navbar-text"> @Html.ActionLink("Orders", "Orders", "Account", null, new { @class = "active", style = "text-decoration: none" }) </li>
+                    }
+                    else
+                    {
+                        <!-- Если пользователь не на странице Orders -->
+                        <li> @Html.ActionLink("Orders", "Orders", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
+                    }
 
                     if (User.IsInRole("User"))
                     {
@@ -36,6 +45,10 @@
                             <li> @Html.Action("UserNavPartial", "Account", new { area = "" })</li>
                         }
                     }
+
+                    <!-- Если пользователь авторизован -->
+                    <li> @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
+
                 }
                 else
                 {
