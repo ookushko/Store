@@ -230,7 +230,7 @@ namespace Store_MVC.Areas.Admin.Controllers
             // Проверяем, был ли загружен файл
             if (file != null && file.ContentLength > 0)
             {
-                // Получаем рамширение файла
+                // Получаем расширение файла
                 string ext = file.ContentType.ToLower();
 
                 // Проверяем расширение файла 
