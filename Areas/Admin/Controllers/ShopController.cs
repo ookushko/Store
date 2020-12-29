@@ -283,7 +283,7 @@ namespace Store_MVC.Areas.Admin.Controllers
         // Метод списка товаров (Реализована возможность переключения страниц с помощью PagedList.mvc)
         // GET: Admin/Shop/Products
         [HttpGet]
-        public ActionResult Products(int? page, int? catId) // Если есть "?" может быть null-значение
+        public ActionResult Products(int? page, int? categoryId) // Если есть "?" может быть null-значение
         {
             // Объявляем ProductVM типа List
             List<ProductVM> listOfProductVM;
@@ -295,7 +295,7 @@ namespace Store_MVC.Areas.Admin.Controllers
             {
                 // Инициализируем List, заполняем данными
                 listOfProductVM = db.Products.ToArray()
-                    .Where(x => catId == null || catId == 0 || x.CategoryId == catId)
+                    .Where(x => categoryId == null || categoryId == 0 || x.CategoryId == categoryId)
                     .Select(x => new ProductVM(x))
                     .ToList();
 
@@ -303,7 +303,7 @@ namespace Store_MVC.Areas.Admin.Controllers
                 ViewBag.Categories = new SelectList(db.Categories.ToList(), "Id", "Name");
 
                 // Установливаем выбранную категорию
-                ViewBag.SelectedCat = catId.ToString();
+                ViewBag.SelectedCat = categoryId.ToString();
             }
 
             // Установливаем постраничную навигацию 
@@ -338,10 +338,11 @@ namespace Store_MVC.Areas.Admin.Controllers
 
                 // Создаём список категорий
                 model.Categories = new SelectList(db.Categories.ToList(), "Id", "Name");
-
+                
                 // Получаем все изображения из галереи
+                string path = "~/Images/Uploads/Products/" + id + "/Gallery/Thumbs";
                 model.GalleryImages = Directory
-                    .EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Thumbs"))
+                    .EnumerateFiles(Server.MapPath(path))
                     .Select(fn => Path.GetFileName(fn));
             }
 

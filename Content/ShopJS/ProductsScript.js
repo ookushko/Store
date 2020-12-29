@@ -5,7 +5,7 @@
         var url = $(this).val();
 
         if (url) {
-            window.location = "/admin/shop/Products?catId=" + url;
+            window.location = "/admin/shop/Products?categoryId=" + url;
         }
         return false;
     });

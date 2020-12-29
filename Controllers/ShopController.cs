@@ -44,13 +44,13 @@ namespace Store_MVC.Controllers
                 // Получаем id категории
                 CategoryDTO dto = db.Categories.Where(x => x.ShortDesc == name).FirstOrDefault();
 
-                int catId = dto.Id;
+                int categoryId = dto.Id;
 
                 // Инициализируем наш список данными
-                productVMList = db.Products.ToArray().Where(x => x.CategoryId == catId).Select(x => new ProductVM(x)).ToList();
+                productVMList = db.Products.ToArray().Where(x => x.CategoryId == categoryId).Select(x => new ProductVM(x)).ToList();
 
                 //Получаем имя категории
-                var productCategory = db.Products.Where(x => x.CategoryId == catId).FirstOrDefault();
+                var productCategory = db.Products.Where(x => x.CategoryId == categoryId).FirstOrDefault();
 
                 // Проверяем на null
                 if (productCategory == null)
