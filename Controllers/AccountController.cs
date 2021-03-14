@@ -31,13 +31,11 @@ namespace Store_MVC.Controllers
         [HttpPost]
         public ActionResult CreateAccount(UserVM model)
         {
-            // Проверяем модель на валидность
             if (!ModelState.IsValid)
             {
                 return View("CreateAccount", model);
             }
 
-            // Проверяем соответствие пароля
             if (!model.Password.Equals(model.ConfirmPassword))
             {
                 ModelState.AddModelError("", "Password do not match.");
@@ -46,7 +44,6 @@ namespace Store_MVC.Controllers
 
             using (Db db = new Db())
             {
-                // Проверяем уникально ли имя
                 if (db.Users.Any(x => x.Username.Equals(model.Username)))
                 {
                     ModelState.AddModelError("", $"Username {model.Username} is taken.");
@@ -54,7 +51,6 @@ namespace Store_MVC.Controllers
                     return View("CreateAccount", model);
                 }
 
-                // Создаём экземпляр класса UserDTO
                 UserDTO userDTO = new UserDTO()
                 {
                     FirstName = model.FirstName,
@@ -64,29 +60,24 @@ namespace Store_MVC.Controllers
                     Password = model.Password
                 };
 
-                // Добавляем данные в модель
                 db.Users.Add(userDTO);
 
-                // Сохраняем данные
                 db.SaveChanges();
 
-                // Добавляем роль пользователю
                 int id = userDTO.Id;
 
                 UserRoleDTO userRoleDTO = new UserRoleDTO()
                 {
                     UserId = id,
-                    RoleId = 2 /* Роль обычного юзера */
+                    RoleId = 2 /* Роль обычного юзера (Хардкод) */
                 };
 
                 db.UserRoles.Add(userRoleDTO);
                 db.SaveChanges();
             }
 
-            // Записываем сообщение в TempData
             TempData["SM"] = "You are now registered and can login.";
 
-            // Переадресовываем пользователя
             return RedirectToAction("Login");
         }
 
@@ -94,14 +85,12 @@ namespace Store_MVC.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            // Подтвердить что пользователь не авторизован
             string userName = User.Identity.Name;
             if (!string.IsNullOrEmpty(userName))
             {
                 return RedirectToAction("user-profile");
             }
 
-            // Возвращаем представление
             return View();
         }
 
@@ -109,13 +98,11 @@ namespace Store_MVC.Controllers
         [HttpPost]
         public ActionResult Login(LoginUserVM model)
         {
-            // Проверяем модель на валидность
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            // Проверяем пользователя на валидность
             using (Db db = new Db())
             {
                 if (db.Users.Any(x => x.Username.Equals(model.Username) && x.Password.Equals(model.Password)))
@@ -135,7 +122,6 @@ namespace Store_MVC.Controllers
         // GET: Account/Logout
         public ActionResult Logout()
         {
-            // Обнуляем сессию 
             Session["cart"] = null;
 
             FormsAuthentication.SignOut();
@@ -145,18 +131,14 @@ namespace Store_MVC.Controllers
         [Authorize]
         public ActionResult UserNavPartial()
         {
-            // Получаем имя пользователя
             string userName = User.Identity.Name;
 
-            // Объявляем модель
             UserNavPartialVM model;
 
             using (Db db = new Db())
             {
-                // Получаем пользователя
                 UserDTO dto = db.Users.FirstOrDefault(x => x.Username == userName);
 
-                // Заполняем модель данными из контекста dto
                 model = new UserNavPartialVM()
                 {
                     FirstName = dto.FirstName,
@@ -164,7 +146,6 @@ namespace Store_MVC.Controllers
                 };
             }
 
-            // Возвращаем частичное представление представление
             return PartialView(model);
         }
 
@@ -174,22 +155,17 @@ namespace Store_MVC.Controllers
         [Authorize]
         public ActionResult UserProfile()
         {
-            // Получаем имя пользователя
             string userName = User.Identity.Name;
 
-            // Объявляем модель
             UserProfileVM model;
 
             using (Db db = new Db())
             {
-                // Получаем пользователя
                 UserDTO dto = db.Users.FirstOrDefault(x => x.Username == userName);
 
-                // Инициализируем модель данными
                 model = new UserProfileVM(dto);
             }
 
-            // Возвращаем модель в представление
             return View("UserProfile", model);
         }
 
@@ -200,13 +176,11 @@ namespace Store_MVC.Controllers
         public ActionResult UserProfile(UserProfileVM model)
         {
             bool userNameIsChanged = false;
-            // Проверяем модель на валидность
             if (!ModelState.IsValid)
             {
                 return View("UserProfile", model);
             }
 
-            // Проверяем пароль (если пользователь его меняет)
             if (!string.IsNullOrWhiteSpace(model.Password) && !model.Password.Equals(model.ConfirmPassword))
             {
                 ModelState.AddModelError("", "Password do not match.");
@@ -215,17 +189,14 @@ namespace Store_MVC.Controllers
 
             using (Db db = new Db())
             {
-                // Получаем имя пользователя
                 string userName = User.Identity.Name;
 
-                // Проверяем сменилось ли имя пользователя
                 if (userName != model.Username)
                 {
                     userName = model.Username;
                     userNameIsChanged = true;
                 }
 
-                // Проверяем имя на уникальность
                 if (db.Users.Where(x => x.Id != model.Id).Any(x => x.Username == userName))
                 {
                     ModelState.AddModelError("", $"Username {model.Username} already exists.");
@@ -233,7 +204,6 @@ namespace Store_MVC.Controllers
                     return View("UserProfile", model);
                 }
 
-                // Изменяем модель контекста данных
                 UserDTO dto = db.Users.Find(model.Id);
 
                 dto.FirstName = model.FirstName;
@@ -246,16 +216,13 @@ namespace Store_MVC.Controllers
                     dto.Password = model.Password;
                 }
 
-                // Сохраняем изменения
                 db.SaveChanges();
             }
 
-            // Устанавливаем сообщение в TempData
             TempData["SM"] = "You have edited your profile.";
 
             if (!userNameIsChanged)
             {
-                // Возвращаем представление с моделью
                 return View("UserProfile", model);
             }
             else
@@ -269,51 +236,37 @@ namespace Store_MVC.Controllers
         [Authorize(Roles = "User")]
         public ActionResult Orders()
         {
-            // Инициализируем модель OrdersForUserVM
             List<OrdersForUserVM> ordersForUser = new List<OrdersForUserVM>();
 
             using (Db db = new Db())
             {
-
-                // Получаем Id пользователя
                 UserDTO user = db.Users.FirstOrDefault(x => x.Username == User.Identity.Name);
                 int userId = db.Users.FirstOrDefault(x => x.Username == User.Identity.Name).Id;
 
-                // Инициализируем модель OrderVM
                 List<OrderVM> orders = db.Orders.Where(x => x.UserId == userId).ToArray()
                     .Select(x => new OrderVM(x)).ToList();
 
-                // Перебираем список товаров в OrderVM
                 foreach (var order in orders)
                 {
-                    // Инициализируем словарь товаров
                     Dictionary<string, int> productsAndQuantity = new Dictionary<string, int>();
 
-                    // Объявляем переменную итоговой суммы
                     decimal total = 0m;
 
-                    // Инициализируем модель OrderDetailsDTO
                     List<OrderDetailsDTO> orderDetailsList = db.OrderDetails.Where(x => x.OrderId == order.OrderId).ToList();
 
-                    // Перебираем список OrderDetailsDTO
                     foreach (var orderDetails in orderDetailsList)
                     {
-                        // Получаем товар
                         ProductDTO product = db.Products.FirstOrDefault(x => x.Id == orderDetails.ProductId);
 
-                        // Получаем цену товара
                         decimal price = product.Price;
 
-                        // Получаем имя товара
                         string productName = product.Name;
 
-                        // Добавляем товар в словарь
                         productsAndQuantity.Add(productName, orderDetails.Quantity);
 
-                        // Получаем конечную стоимость товара
                         total += orderDetails.Quantity * price;
                     }
-                    // Добавляем полученные данные в модель OrdersForUserVM
+
                     ordersForUser.Add(new OrdersForUserVM
                     {
                         OrderNumber = order.OrderId,
@@ -323,7 +276,6 @@ namespace Store_MVC.Controllers
                     });
                 }
             }
-            // Возвращаем представление с моделью OrdersForUserVM
             return View(ordersForUser);
         }
     }

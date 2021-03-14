@@ -12,7 +12,7 @@
     </div>
 }
 
-<!--Благодоря этим свойствам может работать с картинками-->
+<!-- With the help of these properties can work with pictures -->
 @using (Html.BeginForm("EditProduct", "Shop", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
@@ -86,13 +86,6 @@
     <h3>There are no gallery images for this product.</h3>
 }
 
-@*<form action="/admin/shop/SaveGalleryImages" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
-    <div class="fallback">
-        <input type="file" name="file" multiple="" />
-        <input type="submit" value="Upload" />
-    </div>
-</form>*@
-
 <form action="/admin/shop/SaveGalleryImages"
       class="dropzone"
       id="dropzoneForm"></form>
@@ -128,7 +121,7 @@
     <script src="~/Scripts/dropzone/dropzone.js"></script>
 
     <script>
-        /* Dropzone js*/
+        /* Dropzone js */
         Dropzone.options.dropzoneForm = {
             acceptedFiles: "image/*",
             init: function () {

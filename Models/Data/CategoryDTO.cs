@@ -7,7 +7,6 @@ using System.Web;
 
 namespace Store_MVC.Models.Data
 {
-    // Класс контекста данных для категорий 
     [Table("tblCategories")]
     public class CategoryDTO
     {

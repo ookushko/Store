@@ -25,12 +25,10 @@
                     {
                         if (ViewBag.Title == "Orders")
                         {
-                            <!-- Если пользователь на странице Orders -->
                             <li class="navbar-text"> @Html.ActionLink("Orders", "Orders", "Account", null, new { @class = "active", style = "text-decoration: none" }) </li>
                         }
                         else
                         {
-                            <!-- Если пользователь не на странице Orders -->
                             <li> @Html.ActionLink("Orders", "Orders", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
                         }
                     }
@@ -39,17 +37,14 @@
                     {
                         if (ViewBag.Title == "User Profile")
                         {
-                            <!-- Выводит имя и фамилию пользователя -->
                             <li class="active"> @Html.Action("UserNavPartial", "Account", new { area = "" })</li>
                         }
                         else
                         {
-                            <!-- Выводит имя и фамилию пользователя -->
                             <li> @Html.Action("UserNavPartial", "Account", new { area = "" })</li>
                         }
                     }
 
-                    <!-- Если пользователь авторизован -->
                     <li> @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
 
                 }
@@ -57,12 +52,10 @@
                 {
                     if (ViewBag.Title == "Login")
                     {
-                        <!-- Если пользователь на странице Login -->
                         <li class="navbar-text"> @Html.ActionLink("Login", "Login", "Account", null, new { @class = "active", style = "text-decoration: none" }) </li>
                     }
                     else
                     {
-                        <!-- Если пользователь не на странице Login -->
                         <li> @Html.ActionLink("Login", "Login", "Account", null, new { @class = "navbar-text", style = "text-decoration: none" }) </li>
                     }
                 }
@@ -86,8 +79,8 @@
         </div>
     </nav>
 
-    <div class="container body-content"> <!-- Контейнеры -->
-        <div class="row"> <!-- Ряды -->
+    <div class="container body-content">
+        <div class="row">
 
             <div class="col-sm-12 col-md-3 list-group">
                 @Html.Action("CategoryMenuPartial", "Shop")

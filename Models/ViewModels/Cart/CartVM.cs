@@ -16,13 +16,5 @@ namespace Store_MVC.Models.ViewModels.Cart
             get { return Quantity * Price; } 
         }
         public string Image { get; set; }
-
-
-
-
-
-
-
-
     }
 }

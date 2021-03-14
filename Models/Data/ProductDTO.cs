@@ -18,7 +18,6 @@ namespace Store_MVC.Models.Data
         public int CategoryId { get; set; }
         public string ImageName { get; set; }
 
-        // Назначаем внешний ключ
         [ForeignKey("CategoryId")]
         public virtual CategoryDTO Category { get; set; }
     }

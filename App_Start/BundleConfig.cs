@@ -14,12 +14,9 @@ namespace Store_MVC
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
-            // Привязываем новую библиотеку JQuery.UI (5)
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui.js"));
 
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
@@ -31,7 +28,6 @@ namespace Store_MVC
                       "~/Content/site.css",
                       "~/Content/jquery-ui.css"));
 
-            // Подключаем новую библеотеку CKEditor
             bundles.Add(new ScriptBundle("~/bundles/ckeditor").Include(
                       "~/Scripts/ckeditor/ckeditor.js"));
         }

@@ -8,14 +8,10 @@ using System.Web;
 namespace Store_MVC.Models.Data
 {
     [Table("tblSidebar")]
-    public class SidebarDTO //6
+    public class SidebarDTO
     {
         [Key]
         public int Id { get; set; }
         public string Body { get; set; }
-
-
-
-
     }
 }
